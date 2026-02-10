@@ -1,0 +1,13 @@
+{
+  "name": "check-ffplayout",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple ffplayout log watcher sending [ERROR] lines to Telegram.",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+
+

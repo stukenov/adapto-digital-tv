@@ -1,0 +1,64 @@
+// Universal Smart TV React App  ───────────────────────────────────────────────
+// Назначение: единая кодовая база для Samsung Tizen, LG webOS, Android TV /
+// Google TV, Amazon Fire TV, Apple tvOS, Roku и браузерного PWA.
+//
+// Главный стек: React 18 + TypeScript + Yarn Workspaces (monorepo).
+//------------------------------------------------------------------------------
+/* ПАПКИ -------------------------------------------------------------------- */
+packages/
+  app-core/        // бизнес-логика, UI-кит, медиаплеер, навигация
+  renderer-web/    // Tizen, webOS, PWA  (react-tv)
+  renderer-rn-tv/  // Android TV, Fire TV, tvOS (react-native-tvos)
+  renderer-roku/   // Roku (SceneGraph via roku-react)
+  shared-config/   // eslint, tsconfig, babel presets
+scripts/           // build & publish CLI
+.cursorrules       // этот файл
+
+/* НАВИГАЦИЯ ПУЛЬТА --------------------------------------------------------- */
+// Используйте `react-key-navigation`; все focusable компоненты помечайте
+// data-focus-key.  Map native keycodes → RemoteEvent {up,down,left,right,enter,back}.
+
+/* ВОСПРОИЗВЕДЕНИЕ МЕДИА ---------------------------------------------------- */
+- Протоколы: HLS (hls.js) и DASH (dash.js); обёртка `usePlayer`.
+- SSAI: реклама стрижется сервер-сайд, VAST/VPAID не нужен.
+
+/* КОД-СТАЙЛ ---------------------------------------------------------------- */
+- TypeScript strict.
+- Абсолютные импорты `@/` (alias).
+- UI — styled-components, scale 4/8/16/32; радиусы 12/24 px.
+- Анимации только transform/opacity; цель FPS ≥ 30.
+
+/* ВСЕ СКРИПТЫ СБОРКИ ------------------------------------------------------- */
+yarn build:tizen        // .wgt через Tizen CLI
+yarn build:webos        // .ipk через ares-cli
+yarn build:pwa          // dist/ для статики
+yarn build:android-tv   // APK/AAB (RN TV)
+yarn build:tvos         // IPA (RN TV)
+yarn build:roku         // zip для Roku
+
+/* CI/CD (GitHub Actions) --------------------------------------------------- */
+- Стратегия matrix: web-tizen | web-webos | rn-androidtv | rn-tvos | roku
+- Secrets: SAMSUNG_CERT, LG_PRIVKEY, GOOGLE_KEYSTORE, APPLE_P12, ROKU_PASSWORD
+- Загружайте artefact dist/ для каждого рендерера.
+
+/* ТЕСТИРОВАНИЕ ------------------------------------------------------------- */
+- Линтеры: eslint, prettier.
+- Юниты: jest (core), @testing-library/react-native (RN).
+- E2E: Cypress (renderer-web), smoke-скрипты для Tizen & webOS эмуляторов.
+
+/* ЧЕК-ЛИСТ ПУБЛИКАЦИИ ------------------------------------------------------ */
+- Иконки   → Samsung 512×512, LG 130×130 + splash 1920×1080, Google/Amazon 512×512,
+            tvOS TopShelf 1920×720, Roku 336×210.
+- Скрины   → ≥ 4 шт 1080p на платформу.
+- DeepLink → Android TV & tvOS validation.
+- QA       → воспроизведение после suspend/resume, offline-handle.
+
+/* ОГРАНИЧЕНИЯ -------------------------------------------------------------- */
+- Bundle ≤ 5 MB; Runtime RAM ≤ 500 MB.
+- Lazy-import тяжёлых модулей (charts, analytics).
+
+/* ДРУГИЕ ЭКОСИСТЕМЫ -------------------------------------------------------- */
+- Hisense VIDAA, Panasonic myHomeScreen → renderer-web как PWA.
+- PlayStation 5 → PWA, ослабить CSP-sp-headers.
+
+/* ГОТОВО ─ AI в Cursor должен соблюдать эти правила при генерации кода. */

@@ -1,0 +1,32 @@
+name: Validate
+on: [push, pull_request]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set Build Tools and update Rust
+        run: |
+          rustup update stable
+          rustup component add rustfmt
+          rustup component add clippy
+
+      - name: Use ffmpeg on Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: FedericoCarboni/setup-ffmpeg@v2
+
+      - name: Tests on Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          cargo test --all-features
+          cargo clippy --all-features --all-targets -- --deny warnings
+          cargo fmt --all -- --check
+
+      - name: Run build on ${{ matrix.os }}
+        run: cargo build --all-features

@@ -1,0 +1,19 @@
+{
+  "name": "transcode-timetable-items",
+  "version": "1.0.0",
+  "description": "Микросервис для транскодирования видео из JSON расписания",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "transcode",
+    "ffmpeg",
+    "video"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,74 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Documentation
+README.md
+*.md
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+
+# Virtual environment
+.venv
+venv
+ENV
+env
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+.tox
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Django
+*.sqlite3
+db.sqlite3
+db.sqlite3-journal
+media
+staticfiles
+
+# Environment files
+.env*
+
+# Temporary files
+.tmp
+temp
+.cache
+
+# Node modules (if any)
+node_modules
+
+# Development tools
+.editorconfig
+.eslintrc*
+.prettierrc*
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml

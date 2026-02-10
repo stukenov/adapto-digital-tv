@@ -1,0 +1,155 @@
+name: Release (kept)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # =============================================================================
+  # Create Release
+  # =============================================================================
+  create-release:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get version from tag
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%an)" $LAST_TAG..HEAD)
+          else
+            COMMITS=$(git log --pretty=format:"- %s (%an)" HEAD)
+          fi
+          
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            ## Changes
+            ${{ steps.changelog.outputs.CHANGELOG }}
+            
+            ## Assets
+            - Frontend build
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
+
+  # =============================================================================
+  # Build Release Assets
+  # =============================================================================
+  build-frontend-release:
+    needs: create-release
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: apps/front
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/front/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Create archive
+        run: |
+          cd .next
+          tar -czf ../adapto-frontend-${{ needs.create-release.outputs.version }}.tar.gz .
+      
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: apps/front/adapto-frontend-${{ needs.create-release.outputs.version }}.tar.gz
+          asset_name: adapto-frontend-${{ needs.create-release.outputs.version }}.tar.gz
+          asset_content_type: application/gzip
+
+  
+
+  # =============================================================================
+  # Deploy Release to Production
+  # =============================================================================
+  deploy-release:
+    needs: [create-release, build-frontend-release]
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying release ${{ needs.create-release.outputs.version }} to production..."
+          
+          # Add your production deployment commands here
+          # This could include:
+          # - Pulling Docker images with the release tag
+          # - Updating Kubernetes deployments
+          # - Running database migrations
+          # - Updating CDN content
+          
+          echo "✅ Release ${{ needs.create-release.outputs.version }} deployed to production!"
+
+  # =============================================================================
+  # Post-release Tasks
+  # =============================================================================
+  post-release:
+    needs: [deploy-release]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Notify stakeholders
+        run: |
+          echo "📢 Release ${{ needs.create-release.outputs.version }} has been deployed!"
+          
+          # Add notifications here:
+          # - Slack/Discord notifications
+          # - Email notifications
+          # - Update status page
+          # - Trigger monitoring alerts

@@ -1,0 +1,64 @@
+name: Dependabot Auto-merge (front/back)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Detect changed areas
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: |
+            frontend:
+              - 'apps/front/**'
+            backend:
+              - 'apps/back/**'
+
+      - name: Check if PR is from Dependabot
+        id: dependabot-check
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            echo "is_dependabot=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_dependabot=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Get PR details
+        if: steps.dependabot-check.outputs.is_dependabot == 'true'
+        id: pr-details
+        run: |
+          pr_title="${{ github.event.pull_request.title }}"
+          echo "pr_title=$pr_title" >> $GITHUB_OUTPUT
+          
+          # Check if it's a patch/minor update
+          if [[ "$pr_title" =~ ^Bump.*from.*to.* ]]; then
+            if [[ "$pr_title" =~ patch|minor ]]; then
+              echo "auto_merge_eligible=true" >> $GITHUB_OUTPUT
+            else
+              echo "auto_merge_eligible=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "auto_merge_eligible=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Enable auto-merge for Dependabot PRs
+        if: steps.pr-details.outputs.auto_merge_eligible == 'true' && (steps.changes.outputs.frontend == 'true' || steps.changes.outputs.backend == 'true')
+        run: |
+          gh pr review --approve "${{ github.event.pull_request.number }}"
+          gh pr merge --auto --merge "${{ github.event.pull_request.number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

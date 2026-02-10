@@ -1,0 +1,62 @@
+{
+  "defaults": {
+    "channel": "Channel",
+    "date": "",
+    "directory": "",
+    "recursive": false,
+    "filelist": "",
+    "output": "",
+    "noAbs": false,
+    "lang": "ru",
+    "maxItems": 0,
+    "period": "today",
+    "week": 0,
+    "year": 0,
+    "prev": "",
+    "useSeries": false,
+    "episodesPerDay": 4,
+    "useTimeSlots": true,
+    "apiMode": false,
+    "port": "8080",
+    "mapFrom": "",
+    "mapTo": "",
+    "ageRatingFile": ""
+  },
+  "constants": {
+    "videoExtensions": [
+      ".mp4",
+      ".mkv",
+      ".mov",
+      ".avi",
+      ".webm",
+      ".m4v",
+      ".ts",
+      ".m2ts",
+      ".wmv",
+      ".flv",
+      ".3gp"
+    ],
+    "broadcastWindowSeconds": 86340,
+    "baseStartHour": 6,
+    "timeRoundingMinutes": 5
+  },
+  "scheduler": {
+    "daysPerWeek": 7,
+    "timeSlots": [
+      { "startHour": 6, "endHour": 10 },
+      { "startHour": 10, "endHour": 14 },
+      { "startHour": 14, "endHour": 18 },
+      { "startHour": 18, "endHour": 22 },
+      { "startHour": 22, "endHour": 6 }
+    ],
+    "balance": {
+      "attempts": 3,
+      "toleranceRatio": 0.2,
+      "maxDayAllowance": 1.1
+    }
+  },
+  "ffprobe": {
+    "binary": "ffprobe",
+    "fallbackFps": 25
+  }
+}

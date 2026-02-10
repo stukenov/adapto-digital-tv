@@ -1,0 +1,17 @@
+{
+  "name": "timetable-generate",
+  "version": "1.0.0",
+  "description": "Flexible timetable generator for Adapto Digital TV playlists",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "timetable-generate": "bin/timetable-generate.js",
+    "timetable-generate-admin": "bin/timetable-generate-admin.js"
+  },
+  "scripts": {
+    "start:admin": "node src/admin/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,157 @@
+version: "3.8"
+name: timetable
+
+services:
+  timetable-humanize:
+    build:
+      context: ./tools/timetable-humanize
+      dockerfile: Dockerfile
+    image: timetable-humanize:latest
+    container_name: timetable-humanize
+    # Лимиты CPU/RAM (compose без swarm)
+    cpus: "0.50"         # максимум 0.5 CPU
+    mem_limit: "512m"    # максимум 512 МБ RAM
+    pids_limit: 128
+
+    # Доступ к данным плейаутов (хост -> контейнер) и секрету OpenAI API ключа
+    volumes:
+      - /srv/ffplayout-playlists:/data:rw
+      - ./tools/timetable-humanize/secrets/openai_api_key:/run/secrets/openai_api_key:ro
+
+    # Переменные — можно править тут
+    environment:
+      START: "1"
+      END: "10"
+      LANG: "kk"
+      PROMPT: "program_name"
+      MODEL: "gpt-4o"
+      # Сетевые лимиты (в kbit). 0 или пусто = без ограничения
+      UP_KBIT: "2000"     # исходящий (upload)
+      DOWN_KBIT: "5000"   # входящий (download)
+      NET_DEV: "eth0"
+
+    # Нужна для tc
+    cap_add:
+      - NET_ADMIN
+
+    # Собственная сеть (опционально)
+    networks:
+      - ttbnet
+
+    # Выполняем один раз и завершаем (без рестартов)
+    restart: "no"
+
+  timetable-generate:
+    build:
+      context: ./tools/timetable-generate
+      dockerfile: Dockerfile
+    image: timetable-generate:latest
+    container_name: timetable-generate
+    cpus: "0.50"
+    mem_limit: "512m"
+    pids_limit: 128
+    volumes:
+      - /srv/ffplayout-media:/data:ro
+      - /srv/ffplayout-playlists:/out:rw
+    environment:
+      CHANNEL: "MAIN"
+      START: "1"
+      END: "10"
+      LANG: "ru"
+      PERIOD: "week"   # today | day | week
+      WEEK: "4"        # 1-53; 0 = следующая ISO-неделя
+      YEAR: "2026"        # 4-значный год; 0 = ISO-год выбранной недели
+      RECURSIVE: "true"
+      NO_ABS: "false"
+      SERIES: "true"
+      EPISODES: "4"
+      TIMESLOTS: "true"
+      # Сетевые лимиты (в kbit). 0 или пусто = без ограничения
+      UP_KBIT: "0"
+      DOWN_KBIT: "0"
+      NET_DEV: "eth0"
+      TZ: "Asia/Almaty"
+      AGE_RATING_6: "/srv/ffplayout-media/age/6plus.mp4"
+      AGE_RATING_16: "/srv/ffplayout-media/age/16plus.mp4"
+      AGE_RATING_DEFAULT: "16"
+      AGE_RATING_MAP: "4=6"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - ttbnet
+    restart: "no"
+
+  transcode-timetable-items:
+    build:
+      context: ./tools/transcode-timetable-items
+      dockerfile: Dockerfile
+    image: transcode-timetable-items:latest
+    container_name: transcode-timetable-items
+    # Больше ресурсов для транскодирования
+    cpus: "4.00"
+    mem_limit: "4096m"
+    pids_limit: 256
+    # Доступ к медиа и плейлистам
+    volumes:
+      - /srv/ffplayout-media:/srv/ffplayout-media:rw
+      - /srv/ffplayout-playlists:/srv/ffplayout-playlists:rw
+    # NVIDIA GPU для h264_nvenc
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    # Переменные окружения
+    environment:
+      TZ: "Asia/Almaty"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
+    networks:
+      - ttbnet
+    # Выполняем один раз и завершаем
+    restart: "no"
+    # Передаем путь к JSON как аргумент команды
+    # Например: /srv/ffplayout-playlists/ADAPTO/2025/01/15.json
+    command: ["/srv/ffplayout-playlists/1/2025/10/2025-10-26.json"]
+
+  transcode-timetable-items-week:
+    build:
+      context: ./tools/transcode-timetable-items
+      dockerfile: Dockerfile
+    image: transcode-timetable-items:latest
+    container_name: transcode-timetable-items-week
+    # Ресурсы для массового транскодирования за неделю
+    cpus: "4.00"
+    mem_limit: "4096m"
+    pids_limit: 256
+    volumes:
+      - /srv/ffplayout-media:/srv/ffplayout-media:rw
+      - /srv/ffplayout-playlists:/srv/ffplayout-playlists:rw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      TZ: "Asia/Almaty"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
+      # Параметры батча (можно переопределять)
+      WEEK: "4"
+      YEAR: "2026"
+      START: "1"
+      END: "10"
+      PLAYLISTS_DIR: "/srv/ffplayout-playlists"
+    networks:
+      - ttbnet
+    restart: always
+    # Переопределяем entrypoint, чтобы запустить батч-скрипт (Dockerfile использует ENTRYPOINT index.js)
+    entrypoint: ["node", "/app/batch-week.js"]
+
+networks:
+  ttbnet:
+    driver: bridge

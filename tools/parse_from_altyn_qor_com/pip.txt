@@ -1,0 +1,5 @@
+transliterate
+beautifulsoup4
+requests
+tqdm
+paramiko

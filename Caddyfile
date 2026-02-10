@@ -1,0 +1,65 @@
+{$DOMAIN:example.com} {
+        # API-запросы
+        @api path /api/*
+        reverse_proxy @api {$API_BACKEND_UPSTREAM:back-express:8001} {
+                header_up Host {host}
+                header_up X-Real-IP {remote}
+                header_up X-Forwarded-For {remote}
+                header_up X-Forwarded-Proto {scheme}
+                header_up X-Forwarded-Host {host}
+        }
+
+	# Проксируем Django admin под /admin/django/* на основном домене
+	@admindjango path_regexp admindjango ^/admin/django(?P<rest>/.*)?$
+	route @admindjango {
+		rewrite * /admin{http.regexp.admindjango.rest}
+		reverse_proxy backend:8000
+	}
+
+	# Админские static-файлы Django
+	@admin_static path /static/*
+	reverse_proxy @admin_static backend:8000
+
+	# Медиа-файлы (uploads)
+	@media path /media/*
+	reverse_proxy @media backend:8000
+
+	# S3 API для загрузки файлов
+	@s3api path /s3/*
+	reverse_proxy @s3api seaweedfs-s3:8333 {
+		header_up Host {host}
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	# Остальное — на фронт (Next.js)
+	reverse_proxy frontend:3000
+}
+
+{$DASH_DOMAIN:dash.example.com} {
+
+	# Django backend для остальных запросов
+	reverse_proxy backend:8000 {
+		header_up Host {host}
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Forwarded-Host {host}
+	}
+}
+
+
+{$STREAM_DOMAIN:stream.example.com} {
+	reverse_proxy mediamtx:8888
+}
+
+{$HLSX_DOMAIN:hlsx.example.com} {
+	reverse_proxy hlsx:8280 {
+		header_up Host {host}
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Forwarded-Host {host}
+	}
+}

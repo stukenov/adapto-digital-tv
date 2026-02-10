@@ -1,0 +1,113 @@
+version: 2
+updates:
+  # Frontend (Next.js)
+  - package-ecosystem: "npm"
+    directory: "/apps/front"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "frontend"
+      include: "scope"
+
+  # Backend (Python)
+  - package-ecosystem: "pip"
+    directory: "/apps/back"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "backend"
+      include: "scope"
+
+  # SmartTV (Yarn)
+  - package-ecosystem: "npm"
+    directory: "/apps/smarttv"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "smarttv"
+      include: "scope"
+
+  # Mobile App (npm)
+  - package-ecosystem: "npm"
+    directory: "/apps/mobapp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "mobapp"
+      include: "scope"
+
+  # Tools - Generate Playlist
+  - package-ecosystem: "pip"
+    directory: "/tools/generate_playlist"
+    schedule:
+      interval: "monthly"
+      day: "first-monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "tools"
+      include: "scope"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "adapto-dev-team"
+    assignees:
+      - "adapto-dev-team"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

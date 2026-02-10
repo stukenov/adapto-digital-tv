@@ -1,0 +1,58 @@
+{
+    "listen": ":8280",
+    "cors_allow_all": true,
+    "streams": [
+      {
+        "id": "stream1",
+        "manifest_url": "/srv/hls/live/stream1/playlist.m3u8",
+        "segments_base": "/srv/hls/live/stream1"
+      },
+      {
+        "id": "stream2",
+        "manifest_url": "http://mediamtx:8888/live/stream2/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream2"
+      },
+      {
+        "id": "stream3",
+        "manifest_url": "http://mediamtx:8888/live/stream3/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream3"
+      },
+      {
+        "id": "stream4",
+        "manifest_url": "http://mediamtx:8888/live/stream4/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream4"
+      },
+      {
+        "id": "stream5",
+        "manifest_url": "http://mediamtx:8888/live/stream5/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream5"
+      },
+      
+      {
+        "id": "stream6",
+        "manifest_url": "http://mediamtx:8888/live/stream6/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream6"
+      },
+      {
+        "id": "stream7",
+        "manifest_url": "http://mediamtx:8888/live/stream7/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream7"
+      },
+      {
+        "id": "stream8",
+        "manifest_url": "http://mediamtx:8888/live/stream8/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream8"
+      },
+      {
+        "id": "stream9",
+        "manifest_url": "http://mediamtx:8888/live/stream9/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream9"
+      },
+      {
+        "id": "stream10",
+        "manifest_url": "http://mediamtx:8888/live/stream10/main_stream.m3u8",
+        "segments_base": "/app/media/hls/live/stream10"
+      }
+    ]
+  }
+  

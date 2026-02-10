@@ -1,0 +1,30 @@
+[workspace]
+members = ["engine", "tests"]
+resolver = "2"
+
+[workspace.package]
+description = "24/7 playout based on rust and ffmpeg"
+readme = "README.md"
+version = "0.25.3"
+license = "GPL-3.0"
+repository = "https://github.com/ffplayout/ffplayout"
+authors = ["Jonathan Baecker <jonbae77@gmail.com>"]
+edition = "2024"
+
+[profile.release]
+opt-level = 3
+strip = true
+lto = true
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+style = { level = "deny", priority = -1 }
+complexity = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+suspicious = { level = "warn", priority = -1 }
+semicolon_if_nothing_returned = "warn"
+if_not_else = "warn"
+redundant_closure_for_method_calls = "warn"
+explicit_iter_loop = "warn"
+flat_map_option = "warn"
+redundant_else = "warn"

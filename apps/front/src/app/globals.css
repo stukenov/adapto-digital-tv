@@ -1,0 +1,774 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   Adapto Digital TV Premium Design System
+   Inspired by Apple TV+ / Netflix / Disney+
+   ============================================ */
+
+/* Custom Fonts */
+@layer base {
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+/* ============================================
+   Premium Dark Theme (Default)
+   ============================================ */
+
+:root {
+  --radius: 1rem;
+  
+  /* Deep dark background like Apple TV */
+  --background: #000000;
+  --background-secondary: #0D0D0D;
+  --background-tertiary: #141414;
+  --background-elevated: #1A1A1A;
+  
+  /* Text colors */
+  --foreground: #FFFFFF;
+  --foreground-secondary: rgba(255, 255, 255, 0.85);
+  --foreground-muted: rgba(255, 255, 255, 0.6);
+  --foreground-subtle: rgba(255, 255, 255, 0.4);
+  
+  /* Card system */
+  --card: #141414;
+  --card-bg: #141414;
+  --card-hover: #1F1F1F;
+  --card-foreground: #FFFFFF;
+  --card-border: rgba(255, 255, 255, 0.08);
+  
+  /* Popover/Dropdown */
+  --popover: #1A1A1A;
+  --popover-foreground: #FFFFFF;
+  
+  /* Primary accent - vibrant cyan/blue */
+  --primary: #00D4FF;
+  --primary-hover: #00BFFF;
+  --primary-foreground: #000000;
+  
+  /* Secondary */
+  --secondary: #1F1F1F;
+  --secondary-foreground: #FFFFFF;
+  
+  /* Muted */
+  --muted: #1F1F1F;
+  --muted-foreground: rgba(255, 255, 255, 0.6);
+  
+  /* Accent variations */
+  --accent: #1F1F1F;
+  --accent-foreground: #FFFFFF;
+  --accent-blue: #00D4FF;
+  --accent-purple: #A855F7;
+  --accent-pink: #EC4899;
+  --accent-red: #EF4444;
+  --accent-green: #22C55E;
+  --accent-orange: #F97316;
+  --accent-gold: #FFD700;
+  
+  /* Live indicator */
+  --live-indicator: #EF4444;
+  --live-glow: rgba(239, 68, 68, 0.5);
+  
+  /* Gradients */
+  --gradient-hero: linear-gradient(180deg, rgba(0, 212, 255, 0.15) 0%, transparent 50%);
+  --gradient-card: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+  --gradient-overlay: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+  
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: var(--accent-blue);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(20, 20, 20, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Destructive */
+  --destructive: #EF4444;
+  
+  /* Charts */
+  --chart-1: #00D4FF;
+  --chart-2: #22C55E;
+  --chart-3: #F97316;
+  --chart-4: #A855F7;
+  --chart-5: #EF4444;
+  
+  /* Sidebar (admin) */
+  --sidebar: #0D0D0D;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #00D4FF;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #1F1F1F;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #00D4FF;
+}
+
+/* ============================================
+   Theme Variables for Tailwind
+   ============================================ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    background: var(--background);
+  }
+  
+  /* Selection style */
+  ::selection {
+    background: var(--accent-blue);
+    color: #000;
+  }
+}
+
+/* ============================================
+   Premium Component Styles
+   ============================================ */
+
+@layer components {
+  /* Premium Channel Card */
+  .channel-card,
+  .channel-card-featured,
+  .tv-card {
+    @apply relative overflow-hidden rounded-2xl;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .channel-card::before,
+  .channel-card-featured::before,
+  .tv-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .channel-card:hover,
+  .tv-card:hover {
+    transform: scale(1.03) translateY(-4px);
+    border-color: var(--border-hover);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 0 60px rgba(0, 212, 255, 0.1);
+  }
+
+  .channel-card:hover::before,
+  .channel-card-featured:hover::before,
+  .tv-card:hover::before {
+    opacity: 1;
+  }
+
+  .channel-card:active,
+  .channel-card-featured:active,
+  .tv-card:active {
+    transform: scale(0.98);
+  }
+
+  .channel-card:focus-visible,
+  .channel-card-featured:focus-visible,
+  .tv-card:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 4px;
+  }
+
+  /* Featured Channel Card - larger, more prominent */
+  .channel-card-featured {
+    @apply aspect-[16/10];
+    background: linear-gradient(180deg, var(--card) 0%, rgba(20, 20, 20, 0.95) 100%);
+  }
+
+  .channel-card-featured:hover {
+    transform: scale(1.02) translateY(-6px);
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(0, 212, 255, 0.15);
+  }
+
+  /* Glass Header */
+  .glass-header {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  /* Glass Card */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Tab Bar - iOS style */
+  .tab-bar {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 1px solid var(--glass-border);
+  }
+
+  /* Premium Button */
+  .btn-primary,
+  .btn-apple {
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold;
+    background: var(--accent-blue);
+    color: #000;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    overflow: hidden;
+  }
+
+  .btn-primary::before,
+  .btn-apple::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .btn-primary:hover,
+  .btn-apple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+  }
+
+  .btn-primary:active,
+  .btn-apple:active {
+    transform: scale(0.96);
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold;
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .btn-secondary:hover {
+    background: var(--card-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.96);
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium;
+    color: var(--foreground-muted);
+    transition: all 0.2s ease;
+  }
+
+  .btn-ghost:hover {
+    color: var(--foreground);
+    background: var(--secondary);
+  }
+
+  /* Old ios-card for admin panel compatibility */
+  .ios-card {
+    @apply bg-[var(--card)] rounded-2xl overflow-hidden;
+    border: 1px solid var(--card-border);
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .ios-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Old tv-card for compatibility */
+  /* (now shares base styles with .channel-card above) */
+
+  /* Old btn-apple for compatibility */
+  /* (now shares base styles with .btn-primary above) */
+}
+
+/* ============================================
+   Custom Utilities
+   ============================================ */
+
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Premium transitions */
+  .transition-premium {
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .transition-fast {
+    transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .transition-slow {
+    transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Old transition-apple for compatibility */
+  .transition-apple {
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .transition-apple-fast {
+    transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glow effects */
+  .glow-blue {
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px var(--live-glow);
+  }
+}
+
+/* ============================================
+   Premium Animations
+   ============================================ */
+
+/* LIVE Indicator Pulse */
+@keyframes live-pulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+.animate-live {
+  animation: live-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Fade in up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in-up 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.animate-fade-in-delayed {
+  animation: fade-in-up 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+/* Scale in */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* Slide up */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--card) 25%,
+    var(--card-hover) 50%,
+    var(--card) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient shift */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ============================================
+   Scrollbar Styles
+   ============================================ */
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   Video Player Slider
+   ============================================ */
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   Safe Area for Mobile Devices
+   ============================================ */
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+.tab-bar-safe {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+/* ============================================
+   Hero Section Decorations
+   ============================================ */
+
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hero-glow-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+}
+
+.hero-glow-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+  bottom: -100px;
+  left: -100px;
+}
+
+/* ============================================
+   Card Decorations
+   ============================================ */
+
+.card-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.channel-card:hover .card-shine {
+  left: 100%;
+}
+
+/* ============================================
+   Noise Texture Overlay
+   ============================================ */
+
+.noise-overlay::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ============================================
+   Light Theme (Optional - for admin or user preference)
+   ============================================ */
+
+.light-theme {
+  --background: #FFFFFF;
+  --background-secondary: #F5F5F7;
+  --background-tertiary: #E5E5EA;
+  --background-elevated: #FFFFFF;
+  
+  --foreground: #1D1D1F;
+  --foreground-secondary: rgba(0, 0, 0, 0.85);
+  --foreground-muted: rgba(0, 0, 0, 0.6);
+  --foreground-subtle: rgba(0, 0, 0, 0.4);
+  
+  --card: #F5F5F7;
+  --card-bg: #F5F5F7;
+  --card-hover: #E8E8ED;
+  --card-foreground: #1D1D1F;
+  --card-border: rgba(0, 0, 0, 0.08);
+  
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  
+  --primary: #0071E3;
+  --accent-blue: #0071E3;
+}
+
+/* Apply light theme to body when class is present */
+body.light-theme {
+  background: var(--background);
+  color: var(--foreground);
+}

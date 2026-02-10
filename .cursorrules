@@ -1,0 +1,8 @@
+Use only Yarn
+Front in apps/front writed in nextjs, but inside apps/front/ admin with custom layout for admin panel
+Backend in apps/backend writed in django, with migrations
+Front use API from backend
+In production as webserver used Caddy. Deployment writed in docker-compose files in root of project
+Use multilanguage every where (Kazakh, Russian)
+Media server cofig in mediamtx.yml
+in Admin panel use Shadcn/UI everywhere

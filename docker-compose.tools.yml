@@ -1,0 +1,253 @@
+name: tools
+
+services:
+  filebrowser:
+    build:
+      context: tools/filebrowserx
+      dockerfile: Dockerfile
+    container_name: filebrowser
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - PUID=0
+      - PGID=0
+      - NET_TBF_RATE=1mbit
+      - NET_TBF_BURST=16kb
+      - NET_TBF_LATENCY=400ms
+      - NET_INGRESS_RATE=1mbit
+      - NET_INGRESS_BURST=16kb
+    # Важно: используем :slave (или :rslave) чтобы симлинки на /srv/ffplayout-media и /mnt работали корректно
+    volumes:
+      - /srv:/srv:rslave
+      - /mnt:/mnt:rslave
+      - filebrowser_database:/database
+      - filebrowser_config:/config
+    cap_add:
+      - NET_ADMIN
+    cpus: "1" # 50% of a single CPU
+    mem_limit: 128m
+    pids_limit: 256
+    blkio_config:
+      weight: 100
+      device_read_bps:
+        - path: ${FILEBROWSER_BLK_DEV:-/dev/sda}
+          rate: ${FILEBROWSER_READ_BPS:-10mb}
+      device_write_bps:
+        - path: ${FILEBROWSER_BLK_DEV:-/dev/sda}
+          rate: ${FILEBROWSER_WRITE_BPS:-10mb}
+
+  # movefiles:
+  #   build:
+  #     context: tools/move-files
+  #     dockerfile: Dockerfile
+  #   container_name: movefiles
+  #   restart: always
+  #   environment:
+  #     - TZ=Asia/Almaty
+  #     - NET_TBF_RATE=1mbit
+  #     - NET_TBF_BURST=16kb
+  #     - NET_TBF_LATENCY=400ms
+  #     - NET_INGRESS_RATE=1mbit
+  #     - NET_INGRESS_BURST=16kb
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #     - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+  #     - LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
+  #   command:
+  #     - "-sources"
+  #     - "/app/sources"
+  #     - "-sleep"
+  #     - "10"
+  #     - "-url-prefix"
+  #     - "/srv"
+  #     - "-url-segment"
+  #     - "files"
+  #     - "-io-rate"
+  #     - "50mb"
+  #   volumes:
+  #     - /srv:/srv:rslave
+  #     - /mnt:/mnt:rslave
+  #     - ./tools/move-files/sources:/app/sources
+  #   cap_add:
+  #     - NET_ADMIN
+  #   cpus: "0.50"
+  #   mem_limit: 128m
+  #   pids_limit: 256
+  #   blkio_config:
+  #     weight: 100
+  #     device_read_bps:
+  #       - path: ${MOVEFILES_BLK_DEV:-/dev/sda}
+  #         rate: ${MOVEFILES_READ_BPS:-1mb}
+  #     device_write_bps:
+  #       - path: ${MOVEFILES_BLK_DEV:-/dev/sda}
+  #         rate: ${MOVEFILES_WRITE_BPS:-1mb}
+  #   networks:
+  #     - tools_net
+
+  # scan_and_transcode:
+  #   build:
+  #     context: tools/scan_and_transcode_x
+  #     dockerfile: Dockerfile
+  #     args:
+  #       FFMPEG_BASE: ${FFMPEG_BASE_IMAGE:-jrottenberg/ffmpeg:6.1-ubuntu}
+  #   container_name: scan_and_transcode
+  #   restart: always
+  #   environment:
+  #     - TZ=Asia/Almaty
+  #     - NET_TBF_RATE=1mbit
+  #     - NET_TBF_BURST=16kb
+  #     - NET_TBF_LATENCY=400ms
+  #     - NET_INGRESS_RATE=1mbit
+  #     - NET_INGRESS_BURST=16kb
+  #   command:
+  #     - "-dir"
+  #     - "/srv/ffplayout-media/4/AIDAR_3_mausym/"
+  #     - "-min-mb-per-min"
+  #     - "80"
+  #     - "-loop"
+  #     - "-loop-sleep"
+  #     - "60"
+  #     - "-recursive"
+  #     - "-jobs"
+  #     - "1"
+  #     - "-add-ext"
+  #     - ".mxf"
+  #     - "-convert-ext"
+  #     - ".mxf:.mkv"
+  #   volumes:
+  #     - /srv:/srv:rslave
+  #     - /mnt:/mnt:rslave
+  #     - ./tools/scan_and_transcode_x/work:/app/work
+  #   cap_add:
+  #     - NET_ADMIN
+  #   cpus: "0.50"
+  #   mem_limit: 128m
+  #   pids_limit: 256
+  #   blkio_config:
+  #     weight: 100
+  #     device_read_bps:
+  #       - path: ${SCAN_BLK_DEV:-/dev/sda}
+  #         rate: ${SCAN_READ_BPS:-1mb}
+  #     device_write_bps:
+  #       - path: ${SCAN_BLK_DEV:-/dev/sda}
+  #         rate: ${SCAN_WRITE_BPS:-1mb}
+  #   networks:
+  #     - tools_net
+
+  # scan_and_transcode_nvenc:
+  #   profiles: ["nvenc"]
+  #   build:
+  #     context: tools/scan_and_transcode_x
+  #     dockerfile: Dockerfile
+  #     args:
+  #       FFMPEG_BASE: ${FFMPEG_BASE_IMAGE_NVENC:-jrottenberg/ffmpeg:4.4-nvidia}
+  #   container_name: scan_and_transcode_nvenc
+  #   restart: always
+  #   environment:
+  #     - TZ=Asia/Almaty
+  #     - NET_TBF_RATE=100mbit
+  #     - NET_TBF_BURST=128kb
+  #     - NET_TBF_LATENCY=400ms
+  #     - NET_INGRESS_RATE=100mbit
+  #     - NET_INGRESS_BURST=128kb
+  #   command:
+  #     - "-dir"
+  #     - "/srv/ffplayout-media/1/Qazbat/"
+  #     - "-min-mb-per-min"
+  #     - "80"
+  #     - "-loop"
+  #     - "-loop-sleep"
+  #     - "60"
+  #     - "-recursive"
+  #     - "-jobs"
+  #     - "1"
+  #     - "-add-ext"
+  #     - ".mxf"
+  #     - "-convert-ext"
+  #     - ".mxf:.mp4"
+  #     - "-codec"
+  #     - "h264_nvenc"
+  #     - "-debug"
+  #   volumes:
+  #     - /srv:/srv:rslave
+  #     - /mnt:/mnt:rslave
+  #     - ./tools/scan_and_transcode_x/work:/app/work
+  #   devices:
+  #     - "/dev/dri:/dev/dri"
+  #     - "/dev/nvidia0:/dev/nvidia0"
+  #     - "/dev/nvidiactl:/dev/nvidiactl"
+  #     - "/dev/nvidia-uvm:/dev/nvidia-uvm"
+  #   gpus: all
+  #   runtime: nvidia
+  #   cpus: "0.50"
+  #   mem_limit: 128m
+  #   pids_limit: 256
+  #   blkio_config:
+  #     weight: 100
+  #     device_read_bps:
+  #       - path: ${SCAN_BLK_DEV:-/dev/sda}
+  #         rate: ${SCAN_READ_BPS:-1mb}
+  #     device_write_bps:
+  #       - path: ${SCAN_BLK_DEV:-/dev/sda}
+  #         rate: ${SCAN_WRITE_BPS:-1mb}
+  #   networks:
+  #     - tools_net
+
+  # portainer:
+  #   image: portainer/portainer-ce:lts
+  #   container_name: portainer
+  #   restart: always
+  #   ports:
+  #     - "8000:8000"
+  #     - "9443:9443"
+  #     # Uncomment the next line if you need legacy HTTP access
+  #     # - "9000:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - portainer_data:/data
+  #   cpus: "0.25" # 25% of a single CPU
+  #   mem_limit: 64m
+  #   pids_limit: 128
+  #   blkio_config:
+  #     weight: 200
+  #     device_read_bps:
+  #       - path: ${PORTAINER_BLK_DEV:-/dev/sda}
+  #         rate: ${PORTAINER_READ_BPS:-512k}
+  #     device_write_bps:
+  #       - path: ${PORTAINER_BLK_DEV:-/dev/sda}
+  #         rate: ${PORTAINER_WRITE_BPS:-512k}
+
+  # check-ffplayout:
+  #   build:
+  #     context: tools/check-ffplayout
+  #     dockerfile: Dockerfile
+  #   container_name: check-ffplayout
+  #   restart: always
+  #   environment:
+  #     - TZ=Asia/Almaty
+  #     - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+  #     - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+  #     - LOGS_DIR=${FFPLAYOUT_LOGS_DIR:-/srv/ffplayout-logs/}
+  #   volumes:
+  #     - /srv:/srv:rslave
+  #     - check_ffplayout_data:/data
+  #   cpus: "0.10"
+  #   mem_limit: 64m
+  #   pids_limit: 128
+  #   blkio_config:
+  #     weight: 50
+  #     device_read_bps:
+  #       - path: ${CHECK_FFPLAYOUT_BLK_DEV:-/dev/sda}
+  #         rate: ${CHECK_FFPLAYOUT_READ_BPS:-512k}
+  #     device_write_bps:
+  #       - path: ${CHECK_FFPLAYOUT_BLK_DEV:-/dev/sda}
+  #         rate: ${CHECK_FFPLAYOUT_WRITE_BPS:-512k}
+
+volumes:
+  filebrowser_database:
+  filebrowser_config:
+  # portainer_data:
+  # check_ffplayout_data:
+
+networks:
+  tools_net:

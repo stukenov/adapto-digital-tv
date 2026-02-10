@@ -1,0 +1,17 @@
+version: '3'
+name: ffplayout
+
+services:
+  ffplayout:
+    container_name: ffplayout
+    build:
+      context: .
+      dockerfile: tools/ffplayout/docker/Dockerfile
+    volumes:
+      - ./data/db:/db
+      - ./data/storage:/tv-media
+      - ./data/playlists:/playlists
+      - ./data/logging:/logging
+      - ./data/public:/public
+    ports:
+      - '8788:8788'
