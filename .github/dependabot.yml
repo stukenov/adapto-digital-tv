@@ -8,3 +8,51 @@ updates:
       all-updates:
         patterns:
           - "*"
+  - package-ecosystem: "npm"
+    directory: "/apps/back.js"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "pip"
+    directory: "/apps/back"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/apps/front"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/apps/hlsx"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/apps/mobapp"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/apps/smarttv"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-updates:
+        patterns:
+          - "*"
