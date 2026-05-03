@@ -22,13 +22,13 @@
     "directory": "apps/back.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "cors": "^2.8.6",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.3",
-    "pg": "^8.16.3"
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.14"
   }
 }
