@@ -24,10 +24,10 @@ jobs:
       run:
         working-directory: apps/front
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: yarn
@@ -84,10 +84,10 @@ jobs:
       run:
         working-directory: apps/back
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -197,7 +197,7 @@ jobs:
 
       - name: Deploy over SSH (key + optional sudo)
         if: ${{ env.AUTH_MODE == 'key' }}
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         env:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         with:
@@ -238,7 +238,7 @@ jobs:
 
       - name: Deploy over SSH (password + sudo)
         if: ${{ env.AUTH_MODE == 'password' }}
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         env:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
