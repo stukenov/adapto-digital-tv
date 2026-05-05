@@ -5,7 +5,7 @@ drf-yasg
 Pillow
 django-admin-interface
 django-colorfield
-openai>=2.33.0
+openai>=2.34.0
 python-dotenv
 sentry-sdk[django]
 dj-database-url
