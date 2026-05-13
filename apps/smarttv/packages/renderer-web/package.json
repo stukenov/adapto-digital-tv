@@ -20,12 +20,12 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.7.0",
     "hls.js": "^1.6.16",
     "adapto-app-core": "workspace:*",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.2",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.0",
     "styled-components": "^6.4.1"
   },
   "devDependencies": {
@@ -34,9 +34,9 @@
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react-swc": "^4.3.0",
-    "jest": "^30.3.0",
+    "jest": "^30.4.2",
     "typescript": "^6.0.3",
-    "vite": "^8.0.10",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite": "^8.0.12",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }
