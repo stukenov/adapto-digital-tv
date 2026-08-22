@@ -32,6 +32,15 @@ updates:
       all-updates:
         patterns:
           - "*"
+    ignore:
+      # The Next 16 lint/build stack is not ready for these majors yet:
+      # Next and typescript-eslint reject the TypeScript 7 compiler API, and
+      # eslint-plugin-react caps out at ESLint 9. Drop these once upstream
+      # catches up.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "gomod"
     directory: "/apps/hlsx"
     schedule:
