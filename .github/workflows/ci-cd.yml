@@ -169,7 +169,11 @@ jobs:
 
   deploy:
     name: Deploy to Production
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    # Deployment is opt-in: set the repository variable DEPLOY_ENABLED to
+    # "true" once SSH_HOST/SSH_USER and SSH_PRIVATE_KEY (or SSH_PASSWORD)
+    # are configured as secrets. Without it this job is skipped instead of
+    # failing every push on the credentials guard below.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     needs: [frontend, backend, notify-ci]
     runs-on: ubuntu-latest
     timeout-minutes: 60
