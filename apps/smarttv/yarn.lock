@@ -6696,7 +6696,7 @@ __metadata:
     adapto-app-core: "workspace:*"
     babel-jest: ^30.4.1
     babel-plugin-module-resolver: ^5.0.3
-    eslint: ^10.8.1
+    eslint: ^10.9.0
     jest: ^30.4.2
     metro-react-native-babel-preset: 0.77.0
     prettier: ^3.9.6
@@ -6732,7 +6732,7 @@ __metadata:
     react-router-dom: ^7.18.2
     styled-components: ^6.5.3
     typescript: ^7.0.2
-    vite: ^8.2.1
+    vite: ^8.2.2
     vite-plugin-pwa: ^1.3.0
   languageName: unknown
   linkType: soft
@@ -6759,7 +6759,7 @@ __metadata:
     babel-plugin-styled-components: ^2.3.0
     concurrently: ^10.0.5
     core-js: ^3.50.0
-    eslint: ^10.8.1
+    eslint: ^10.9.0
     eslint-config-prettier: ^10.1.8
     eslint-plugin-prettier: ^5.5.6
     eslint-plugin-react: ^7.33.0
@@ -8854,9 +8854,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.1":
-  version: 10.8.1
-  resolution: "eslint@npm:10.8.1"
+"eslint@npm:^10.9.0":
+  version: 10.9.0
+  resolution: "eslint@npm:10.9.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.8.0
     "@eslint-community/regexpp": ^4.12.2
@@ -8895,7 +8895,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 3e12260c5af48faef3d4ae0005c88e41ceded9915a2b67417e8dc5b8668f809095e6e445fa02fbbbe98aa178f08c464f627da0d553fb17952abde4322698d748
+  checksum: 05eec36548bb9627b2b6ca052e83fd77c35e1cdccc5ef3ff6de46122d80958b06fa1ba0da30dd18bf0bbfe76b405bc93acee5df0ab6ff36603a0b99e83c9b371
   languageName: node
   linkType: hard
 
