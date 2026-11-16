@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -11,7 +11,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/apps/back.js"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/apps/back"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -27,7 +27,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/apps/front"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -44,7 +44,7 @@ updates:
   - package-ecosystem: "gomod"
     directory: "/apps/hlsx"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -52,7 +52,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/apps/mobapp"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
@@ -60,7 +60,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/apps/smarttv"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       all-updates:
         patterns:
