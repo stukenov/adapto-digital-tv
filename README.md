@@ -35,8 +35,8 @@ Adapto Digital TV is a self-hosted platform for managing TV channels, video-on-d
 
 ```bash
 # Clone the repository
-git clone https://github.com/adapto-digital-tv/adapto.git
-cd adapto
+git clone https://github.com/stukenov/adapto-digital-tv.git
+cd adapto-digital-tv
 
 # Configure environment
 cp env.example .env
@@ -137,5 +137,5 @@ Note: `tools/ffplayout/` contains code with its own GPL license.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/adapto-digital-tv/adapto/issues)
+- **Issues**: [GitHub Issues](https://github.com/stukenov/adapto-digital-tv/issues)
 - **Documentation**: See [`docs/`](docs/) folder
