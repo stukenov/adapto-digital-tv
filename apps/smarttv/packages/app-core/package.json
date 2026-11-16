@@ -17,11 +17,11 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "hls.js": "^1.7.3",
+    "hls.js": "^1.7.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-is": "^19.3.1",
-    "react-router-dom": "^7.18.4",
+    "react-router-dom": "^7.18.5",
     "styled-components": "^6.6.0"
   },
   "devDependencies": {
